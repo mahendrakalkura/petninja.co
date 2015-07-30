@@ -1,0 +1,447 @@
+{% extends 'layout.html' %}
+
+{% set nav = 'searches' %}
+
+{% macro pagination(pager) %}
+    {% if g.plan in ['Pro'] %}
+        <div class="clearfix pagination_">
+            <i
+                class="fa"
+                ng-class="{
+                    'fa-table': !exporting,
+                    'fa-spinner fa-spin': exporting
+                }"
+                ng-click="export()"
+                ></i>
+            <ul
+                class="pagination pull-right"
+                ng-show="pager.pages_1.length > 1"
+                >
+                <li ng-class="{'active': 1 == page}">
+                    <a
+                        class="fa fa-angle-double-left" ng-click="set_page(1)">
+                    </a>
+                </li>
+                <li ng-class="{'active': pager.previous == page}">
+                    <a
+                        class="fa fa-angle-left"
+                        ng-click="set_page(pager.previous)"
+                        ></a>
+                </li>
+                <li
+                    ng-repeat="p in pager.pages_1"
+                    ng-class="{'active': p == page}"
+                    >
+                    <a ng-click="set_page(p)">[! p|number !]</a>
+                </li>
+                <li ng-class="{'active': pager.next == page}">
+                    <a
+                        class="fa fa-angle-right"
+                        ng-click="set_page(pager.next)"
+                        ></a>
+                </li>
+                <li ng-class="{'active': pager.pages_2 == page}">
+                    <a
+                        class="fa fa-angle-double-right"
+                        ng-click="set_page(pager.pages_2)"
+                        ></a>
+                </li>
+            </ul>
+            <p>
+                Showing
+                [! pager.first|number !]
+                to
+                [! pager.last|number !]
+                of
+                [! pager.count|number !]
+            </p>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% block component %}
+    {% if g.plan in ['Pro'] %}
+        <div class="pull-right">
+            <a
+                class="btn btn-success"
+                ng-click="save()"
+                ng-show="search.id == 0"
+                >
+                <i class="fa fa-floppy-o"></i>
+                Save
+            </a>
+            <a
+                class="btn btn-success"
+                ng-click="update()"
+                ng-show="search.id != 0"
+                >
+                <i class="fa fa-check-circle"></i>
+                Update
+            </a>
+            <a
+                class="btn btn-danger"
+                ng-click="delete()"
+                ng-show="search.id != 0"
+                >
+                <i class="fa fa-times-circle"></i>
+                Delete
+            </a>
+            <div class="btn-group">
+                <a
+                    class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown"
+                    >
+                    <i class="fa fa-briefcase"></i>
+                    <span ng-show="search.id == 0">New Search</span>
+                    <span ng-show="search.id != 0">[! search.name !]</span>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a ng-click="new()">
+                            <i class="fa fa-plus-circle"></i> New Search
+                        </a>
+                    </li>
+                    <li class="divider" ng-show="searches.length"></li>
+                    <li ng-repeat="search in searches">
+                        <a ng-click="old(search)">
+                            <strong>[! $index + 1|number !].</strong>
+                            [! search.name !]
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+    <h1>Search Facebook</h1>
+    <form class="form-horizontal" ng-submit="profiles_get_list()">
+        <p class="alert alert-info text-center" ng-show="profile">
+            Results for groups similar to <strong>[! profile.name !].</strong>
+        </p>
+        <div ng-hide="profile">
+            <hr>
+            <div class="clearfix form-group">
+                <label class="col-sm-2 control-label" for="category">
+                    Category
+                </label>
+                <div class="col-sm-10">
+                    <input
+                        autocomplete="off"
+                        class="form-control"
+                        datasets="datasets_category"
+                        id="category"
+                        ng-model="search.contents.filter.category"
+                        options="options_category"
+                        type="text"
+                        typeahead
+                        >
+                </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-sm-2 control-label" for="location">
+                    Location
+                </label>
+                <div class="col-sm-10">
+                    <input
+                        autocomplete="off"
+                        class="form-control"
+                        datasets="datasets_location"
+                        id="location"
+                        ng-model="search.contents.filter.location"
+                        options="options_location"
+                        type="text"
+                        typeahead
+                        >
+                </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-sm-2 control-label" for="likes_minimum">
+                    Number of Likes
+                </label>
+                <div class="col-sm-5 minimum">
+                    <div class="input-group">
+                        <span class="input-group-addon text">From</span>
+                        <input
+                            class="col-sm-3 form-control"
+                            id="filter.likes_from"
+                            ng-model="search.contents.filter.likes_minimum"
+                            type="text"
+                            >
+                    </div>
+                </div>
+                <div class="col-sm-5 maximum">
+                    <div class="input-group">
+                        <span class="input-group-addon text">To</span>
+                        <input
+                            class="col-sm-3 form-control"
+                            id="filter.likes_to"
+                            ng-model="search.contents.filter.likes_maximum"
+                            type="text"
+                            >
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-sm-2 control-label" for="discussions_minimum">
+                    % Talking About
+                </label>
+                <div class="col-sm-5 minimum">
+                    <div class="input-group">
+                        <span class="input-group-addon text">From</span>
+                        <input
+                            class="col-sm-3 form-control"
+                            id="discussions_from"
+                            ng-model="search.contents.filter.discussions_minimum"
+                            type="text"
+                            >
+                    </div>
+                </div>
+                <div class="col-sm-5 maximum">
+                    <div class="input-group">
+                        <span class="input-group-addon text">To</span>
+                        <input
+                            class="col-sm-3 form-control"
+                            id="discussions_to"
+                            ng-model="search.contents.filter.discussions_maximum"
+                            type="text"
+                            >
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix form-group">
+                <label class="col-sm-2 control-label" for="name">Name</label>
+                <div class="col-sm-10">
+                    <input
+                        class="form-control"
+                        id="name"
+                        ng-model="search.contents.filter.name"
+                        type="text"
+                        >
+                </div>
+            </div>
+            <div class="clearfix form-group">
+                <div class="clearfix col-sm-12">
+                    <a
+                        class="search pull-right"
+                        ng-click="profiles_get_list()"></a>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </form>
+    <div class="order-by">
+        Order By
+        <div class="pull-right">
+            <div class="btn-group" data-toggle="buttons">
+                {% for column in columns %}
+                    <label
+                        class="btn btn-default"
+                        ng-class="{
+                            'active':
+                            search.contents.order_by.column == '{{ column[0] }}'
+                        }"
+                        ng-click="set_order_by_column('{{ column[0] }}')"
+                        ng-model="search.contents.order_by.column"
+                        >
+                        <input type="radio" name="options">
+                        {{ column[1] }}
+                    </label>
+                {% endfor %}
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+                {% for direction in directions %}
+                    <label
+                        class="btn btn-default"
+                        ng-class="{
+                            'active':
+                            search.contents.order_by.direction == '{{
+                                direction[0]
+                            }}'
+                        }"
+                        ng-click="set_order_by_direction('{{ direction[0] }}')"
+                        ng-model="search.contents.order_by.direction"
+                        >
+                        <i class="fa fa-sort-alpha-{{ direction[0] }}"></i>
+                        <input type="radio" name="options">
+                        {{ direction[1] }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <p class="text-center" ng-show="searching">
+        <i class="fa fa-cog fa-lg fa-spin"></i>
+    </p>
+    <div ng-show="!searching">
+        <div ng-show="profiles.length > 0">
+            {{ pagination(pager) }}
+            <table class="table table-hover table-striped">
+                <tr ng-repeat="profile in profiles">
+                    <td>
+                        <div class="profile">
+                            <a
+                                href="[! profile.urls_local !]"
+                                rel="nofollow"
+                                target="_blank"
+                                ><img
+                                    ng-src="[! profile.image !]"
+                                    rel="nofollow"
+                                    ></a>
+                            <h2>
+                                <a
+                                    href="[! profile.urls_local !]"
+                                    rel="nofollow"
+                                    target="_blank"
+                                    >[! profile.name !]</a>
+                            </h2>
+                            <div class="offset">
+                                <div>
+                                    Likes:
+                                    <strong>
+                                        [! profile.numbers_likes|number !]
+                                    </strong>
+                                    <i
+                                        class="fa fa-info-circle"
+                                        data-toggle="tooltip"
+                                        ng-show="!profile.numbers_likes"
+                                        title="Our spiders have not yet updated the indexes for this profile."
+                                        ></i>
+                                </div>
+                                <div>
+                                    Talking About:
+                                    <strong>
+                                        [! profile.numbers_discussions_absolute|number !]
+                                        <small>
+                                            ([! profile.numbers_discussions_relative|number:2 !]%)
+                                        </small>
+                                    </strong>
+                                    <i
+                                        class="fa fa-info-circle"
+                                        data-toggle="tooltip"
+                                        ng-show="!profile.numbers_discussions_absolute"
+                                        title="Our spiders have not yet updated the indexes for this profile."
+                                        ></i>
+                                </div>
+                                <div class="buttons">
+                                    {% if g.plan in ['Personal', 'Pro'] %}
+                                        <a
+                                            class="btn btn-default btn-xs pull-left"
+                                            ng-click="find_similar(profile)"
+                                            >
+                                            <i class="fa fa-group"></i> Find Similar
+                                        </a>
+                                    {% endif %}
+                                    {% if g.plan in ['Pro'] %}
+                                        <a
+                                            class="btn btn-success btn-xs pull-left"
+                                            ng-click="add_to_watchlist(profile)"
+                                            ng-show="!is_watched(profile)"
+                                            >
+                                            <i
+                                                class="fa fa-certificate"
+                                                ng-show="!profile.spinner"
+                                                ></i>
+                                            <i
+                                                class="fa fa-spinner fa-spin"
+                                                ng-show="profile.spinner"
+                                                ></i>
+                                            Watch
+                                        </a>
+                                        <a
+                                            class="btn btn-danger btn-xs pull-left"
+                                            ng-click="remove_from_watchlist(profile)"
+                                            ng-show="is_watched(profile)"
+                                            >
+                                            <i
+                                                class="fa fa-certificate"
+                                                ng-show="!profile.spinner"
+                                                ></i>
+                                            <i
+                                                class="fa fa-spinner fa-spin"
+                                                ng-show="profile.spinner"
+                                                ></i>
+                                            Unwatch
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div>
+                                <label>Link:</label>
+                                <a
+                                    href="[! profile.urls_local !]"
+                                    rel="nofollow"
+                                    target="_blank"
+                                    >[! profile.urls_local|truncate !]</a>
+                            </div>
+                            <div>
+                                <label>Location:</label>
+                                <strong>[! profile.location && profile.location || 'N/A' !]</strong>
+                                <i
+                                    class="fa fa-info-circle"
+                                    data-toggle="tooltip"
+                                    ng-show="!profile.location"
+                                    title="Our spiders have not yet updated the indexes for this profile."
+                                    ></i>
+                            </div>
+                            <div>
+                                <label>Categories:</label>
+                                <strong>
+                                    [! profile.categories_primary !]
+                                    <small ng-show="profile.categories_secondary">
+                                        ([! profile.categories_secondary !])
+                                    </small>
+                                </strong>
+                            </div>
+                            <div>
+                                <label>Age Group:</label>
+                                <strong>[! profile.others_age_group && profile.others_age_group || 'N/A' !]</strong>
+                                <i
+                                    class="fa fa-info-circle"
+                                    data-toggle="tooltip"
+                                    ng-show="!profile.others_age_group"
+                                    title="Our spiders have not yet updated the indexes for this profile."
+                                    ></i>
+                            </div>
+                            <div>
+                                <label>Founded:</label>
+                                <strong>[! profile.date && profile.date || 'N/A' !]</strong>
+                                <i
+                                    class="fa fa-info-circle"
+                                    data-toggle="tooltip"
+                                    ng-show="!profile.date"
+                                    title="Our spiders have not yet updated the indexes for this profile."
+                                    ></i>
+                            </div>
+                            <div>
+                                <a ng-click="more = true" ng-show="!more">
+                                    more...
+                                </a>
+                                <a ng-click="more = false" ng-show="more">
+                                    less...
+                                </a>
+                            </div>
+                            <div class="about" ng-show="more">
+                                <label>About:</label>
+                                [! profile.description && profile.description || 'N/A' !]
+                                <i
+                                    class="fa fa-info-circle"
+                                    data-toggle="tooltip"
+                                    ng-show="!profile.description"
+                                    title="Our spiders have not yet updated the indexes for this profile."
+                                    ></i>
+                                <br>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            {{ pagination(pager) }}
+        </div>
+        <div ng-show="profiles.length == 0">
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle"></i>
+                Your search did not yield any results.
+            </div>
+        </div>
+    </div>
+{% endblock %}

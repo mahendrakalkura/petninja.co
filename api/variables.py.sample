@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+
+dictionary = {
+    # Celery
+    'BROKER_URL': 'amqp://guest:guest@localhost:5672//',
+    # Flask
+    'DEBUG': True,
+    'PROPAGATE_EXCEPTIONS': True,
+    # MySQL
+    'MYSQL': {
+        'database': '...',
+        'drivername': 'mysql+mysqldb',
+        'host': '...',
+        'password': '...',
+        'port': '...',
+        'username': '...',
+    },
+    # PostgreSQL
+    'POSTGRESQL': {
+        'database': '...',
+        'drivername': 'postgres',
+        'host': '...',
+        'password': '...',
+        'port': '...',
+        'username': '...',
+    },
+    # RotateIP
+    'SERVERS': [
+        ...,
+    ],
+}

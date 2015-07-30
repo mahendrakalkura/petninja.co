@@ -1,0 +1,39 @@
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Save</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-show="alert">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    Your changes were not successfully updated. Please try
+                    again.
+                </div>
+                <form class="form-horizontal">
+                    <div class="clearfix form-group">
+                        <label class="col-sm-2 control-label" for="name">
+                            Name
+                        </label>
+                        <div class="col-sm-10">
+                            <input
+                                class="form-control"
+                                id="name"
+                                ng-model="search.name"
+                                type="text"
+                                >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success" ng-click="submit()">
+                    <i class="fa fa-check-circle"></i> Submit
+                </a>
+                <a class="btn btn-danger" ng-click="close()">
+                    <i class="fa fa-times-circle"></i> Close
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

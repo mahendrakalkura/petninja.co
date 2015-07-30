@@ -1,0 +1,114 @@
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit - [! watchlist.profile.name !]</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-show="alert">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    Your changes were not successfully updated. Please try
+                    again.
+                </div>
+                <form class="form watchlist">
+                    <div class="clearfix form-group">
+                        <div class="row">
+                            <div class="col col-sm-3">
+                                <label for="likes">Likes</label>
+                            </div>
+                            <div class="col col-sm-3">
+                                <select
+                                    class="form-control"
+                                    id="likes"
+                                    ng-model="watchlist.contents.likes.operand"
+                                    ng-options="operand[0] as operand[1] for operand in operands"
+                                    ng-selected="operand[0] == watchlist.contents.likes.operand"
+                                    >
+                                </select>
+                            </div>
+                            <div class="col col-sm-4">
+                                <div class="input-group">
+                                    <input
+                                        class="form-control text-right"
+                                        ng-model="watchlist.contents.likes.quantity"
+                                        type="text"
+                                        >
+                                    <span class="input-group-addon symbol">
+                                        %
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            ng-checked="watchlist.contents.likes.status"
+                                            ng-model="watchlist.contents.likes.status"
+                                            >
+                                        Notify
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix form-group">
+                        <div class="row">
+                            <div class="col col-sm-3">
+                                <label for="discussions">Talking About</label>
+                            </div>
+                            <div class="col col-sm-3">
+                                <select
+                                    class="form-control"
+                                    id="discussions"
+                                    ng-model="watchlist.contents.discussions.operand"
+                                    ng-options="operand[0] as operand[1] for operand in operands"
+                                    ng-selected="operand[0] == watchlist.contents.discussions.operand"
+                                    >
+                                </select>
+                            </div>
+                            <div class="col col-sm-4">
+                                <div class="input-group">
+                                    <input
+                                        class="form-control text-right"
+                                        ng-model="watchlist.contents.discussions.quantity"
+                                        type="text"
+                                        >
+                                    <span class="input-group-addon symbol">
+                                        %
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col col-sm-2">
+                                <div class="checkbox">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            ng-checked="watchlist.contents.discussions.status"
+                                            ng-model="watchlist.contents.discussions.status"
+                                            >
+                                        Notify
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix form-group">
+                        <p class="help-block">
+                            <i class="fa fa-info-circle"></i>
+                            ...compared to the previous week
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success" ng-click="submit()">
+                    <i class="fa fa-check-circle"></i> Submit
+                </a>
+                <a class="btn btn-danger" ng-click="close()">
+                    <i class="fa fa-times-circle"></i> Close
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

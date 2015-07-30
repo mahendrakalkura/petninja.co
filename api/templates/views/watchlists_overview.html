@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% set nav = 'watchlists' %}
+
+{% block component %}
+    <div ng-show="!spinner">
+        <h1>Watchlist</h1>
+        <hr>
+        <table
+            class="table table-hover table-striped"
+            ng-show="watchlists.length > 0"
+            >
+            <tr>
+                <th class="narrow text-right">ID</th>
+                <th>Group</th>
+                <th class="actions">Actions</th>
+            </tr>
+            <tr ng-repeat="watchlist in watchlists">
+                <td class="narrow text-right">[! $index + 1 !]</td>
+                <td>[! watchlist.profile.name !]</td>
+                <td class="actions">
+                    <a
+                        class="btn btn-success btn-xs"
+                        ng-click="edit(watchlist)"
+                        >
+                        <i class="fa fa-check-circle"></i>
+                        Edit
+                    </a>
+                    <a
+                        class="btn btn-danger btn-xs"
+                        ng-click="delete(watchlist)"
+                        >
+                        <i class="fa fa-times-circle"></i>
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        </table>
+        <div ng-show="watchlists.length == 0">
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle"></i>
+                You are not watching any groups.
+            </div>
+        </div>
+    </div>
+    <p class="text-center" ng-show="spinner">
+        <i class="fa fa-cog fa-lg fa-spin"></i>
+    </p>
+{% endblock %}

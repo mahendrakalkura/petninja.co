@@ -1,0 +1,24 @@
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete - [! watchlist.profile.name !]</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-show="alert">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    Your request could not be completed. Please try again.
+                </div>
+                <p>Are you sure you want to stop watching this group?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success" ng-click="yes()">
+                    <i class="fa fa-check-circle"></i> Yes
+                </a>
+                <a class="btn btn-danger" ng-click="no()">
+                    <i class="fa fa-times-circle"></i> No
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

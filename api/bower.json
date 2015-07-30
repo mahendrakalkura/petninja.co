@@ -1,0 +1,20 @@
+{
+    "dependencies": {
+        "angular": "1.2.14-build.2338+sha.27873ac",
+        "angular-route": "1.2.14-build.2338+sha.27873ac",
+        "bootstrap": "3.1.1",
+        "font-awesome": "4.0.3",
+        "jquery": "2.1.0",
+        "lodash": "2.4.1",
+        "restangular": "1.3.1",
+        "typeahead.js": "0.10.1"
+    },
+    "devDependencies": {},
+    "ignore": [],
+    "main": "",
+    "name": "petninja.co",
+    "resolutions": {
+        "jquery": "2.1.0"
+    },
+    "version": "1.0.0"
+}

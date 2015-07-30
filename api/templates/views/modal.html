@@ -1,0 +1,24 @@
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">[! title !]</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success" ng-show="status">
+                    <i class="fa fa-check-circle"></i>
+                    [! body !]
+                </div>
+                <div class="alert alert-danger" ng-show="!status">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    [! body !]
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success" ng-click="close()">
+                    <i class="fa fa-times-circle"></i> Close
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
