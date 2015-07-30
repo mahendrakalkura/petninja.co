@@ -31,6 +31,7 @@ $ bower install
 
 Step 4
 ------
+```
 $ cp api/variables.py.sample api/variables.py
 $ cp www/wp-config-sample.php www/wp-config.php
 $ cp www/wp-content/plugins/facebook-search-engine/others/variables-sample.php www/wp-content/plugins/facebook-search-engine/others/variables.php
