@@ -1,0 +1,45 @@
+.center {
+    text-align: center;
+}
+
+#namediv .inside p,
+#namediv .inside pre {
+    margin-bottom: 0;
+}
+
+#namediv .inside p + p {
+    margin-top: 10px;
+}
+
+#namediv .inside .center {
+    line-height: 20px;
+}
+
+#namediv .inside .center img {
+    vertical-align: top;
+}
+
+#namediv .inside .widefat {
+    margin-top: 10px;
+}
+
+#namediv .inside .widefat {
+    border: 0;
+    border-collapse: collapse;
+}
+
+#namediv .inside .widefat tr td {
+    border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    line-height: 20px;
+}
+
+#namediv .inside .widefat tr td img {
+    vertical-align: top;
+}
+
+#namediv .inside .widefat tr .narrow {
+    text-align: right;
+    white-space: nowrap;
+    width: 1px;
+}
